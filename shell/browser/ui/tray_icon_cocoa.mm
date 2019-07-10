@@ -72,9 +72,6 @@
              owner:self
           userInfo:nil]);
   [self addTrackingArea:trackingArea_];
-  // TODO: remove LOG
-  LOG(INFO) << "update tracking rect: "
-            << [NSStringFromRect(trackingArea_.get().rect) UTF8String];
 }
 
 - (void)removeItem {
@@ -89,12 +86,12 @@
 }
 
 - (void)setImage:(NSImage*)image {
-  [[statusItem_ button] setImage:image];  // TODO: or [image copy] ?
+  [[statusItem_ button] setImage:[image copy]];
   [self updateDimensions];
 }
 
 - (void)setAlternateImage:(NSImage*)image {
-  [[statusItem_ button] setAlternateImage:image];  // TODO: or [image copy] ?
+  [[statusItem_ button] setAlternateImage:[image copy]];
 }
 
 - (void)setIgnoreDoubleClickEvents:(BOOL)ignore {
@@ -108,11 +105,9 @@
 - (void)setTitle:(NSString*)title {
   if ([title containsANSICodes]) {
     [[statusItem_ button]
-        setAttributedTitle:
-            [title
-                attributedStringParsingANSICodes]];  // TODO: or [title copy] ?
+        setAttributedTitle:[[title copy] attributedStringParsingANSICodes]];
   } else {
-    [[statusItem_ button] setTitle:title];  // TODO: or [title copy] ?
+    [[statusItem_ button] setTitle:[title copy]];
   }
 
   // Fix icon margins.
@@ -292,11 +287,6 @@ std::string TrayIconCocoa::GetTitle() {
   return base::SysNSStringToUTF8([status_item_view_ title]);
 }
 
-void TrayIconCocoa::SetHighlightMode(TrayIcon::HighlightMode mode) {
-  // TODO: remove LOG & method?
-  LOG(INFO) << "Not supported.";
-}
-
 void TrayIconCocoa::SetIgnoreDoubleClickEvents(bool ignore) {
   [status_item_view_ setIgnoreDoubleClickEvents:ignore];
 }
@@ -329,7 +319,7 @@ void TrayIconCocoa::SetContextMenu(AtomMenuModel* menu_model) {
 }
 
 gfx::Rect TrayIconCocoa::GetBounds() {
-  return gfx::ScreenRectFromNSRect([status_item_view_ bounds]);
+  return gfx::ScreenRectFromNSRect([status_item_view_ window].frame);
 }
 
 // static
