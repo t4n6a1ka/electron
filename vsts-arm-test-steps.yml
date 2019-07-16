@@ -5,6 +5,7 @@ steps:
     TargetFolder: src/electron
 
 - bash: |
+    whoami
     cd src/electron
     node script/yarn.js install --frozen-lockfile
   displayName: 'Yarn install'
