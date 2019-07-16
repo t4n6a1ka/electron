@@ -64,7 +64,7 @@ steps:
    export ELECTRON_OUT_DIR=Default
    (cd electron && node script/yarn test -- --ci --enable-logging)
   displayName: 'Run Electron tests'
-  timeoutInMinutes: 10
+  timeoutInMinutes: 20
   env:
     ELECTRON_DISABLE_SANDBOX: 1
     ELECTRON_DISABLE_SECURITY_WARNINGS: 1
