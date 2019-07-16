@@ -53,14 +53,6 @@ steps:
   env:
     CIRCLE_TOKEN: $(CIRCLECI_TOKEN)
 
-
-- bash: |
-    cd src
-    export npm_config_nodedir=$PWD/out/Default/gen/node_headers
-    cd electron/spec
-    node ../script/yarn.js install --frozen-lockfile
-  displayName: Install test modules
-
 - bash: |
     sh -e /etc/init.d/xvfb start
   displayName: Setup for headless testing
@@ -69,12 +61,14 @@ steps:
 
 - bash: |
    cd src
-   ./out/Default/electron electron/spec --ci --enable-logging
+   export ELECTRON_OUT_DIR=Default
+   (cd electron && node script/yarn test -- --ci --enable-logging)
   displayName: 'Run Electron tests'
   timeoutInMinutes: 10
   env:
     ELECTRON_DISABLE_SANDBOX: 1
     ELECTRON_DISABLE_SECURITY_WARNINGS: 1
+    IGNORE_YARN_INSTALL_ERROR: 1
 
 - bash: |
     cd src
